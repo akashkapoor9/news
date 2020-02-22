@@ -1,49 +1,114 @@
 <!doctype html>
 <html lang="en">
-  <head>
+   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Google Fonts -->
-    <!-- Swap out "Roboto" for the font(s) you want to use -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-    
+   
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" crossorigin="anonymous">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/uikit@latest/dist/css/uikit.min.css">
     
     <!-- Your own CSS -->
     <link rel="stylesheet" href="/styles.css">
 
-    <title>News</title>
+    <title>Weather Tracker</title>
   </head>
-  <body>
+  <body class="uk-background-muted uk-height-viewport" data-uk-height-viewport>
 
-    <div class="container mt-5">
-      <h1>News</h1>
-        <label>Current Weather: &nbsp; </label><%= @current_temp.round(1) %>&deg;F <%= @current_summary %> 
-        
-        <% for temp in @forecast["daily"]["data"]
-                @forecast_tempHigh = temp["temperatureHigh"]
-                @forecast_tempLow = temp["temperatureLow"]
-                @forecast_summary = temp["summary"]
+  <section class="uk-section uk-section-large">
+    <div class="uk-container">
+    <div class="uk-alert-primary uk-border-rounded" uk-alert>
+        <h2><center><i class="fas fa-temperature-low"></i> Weather and News Portal <i class="fas fa-newspaper"></i></h2>
+    </div>
+    <a href="/" class="uk-card-badge uk-label uk-border-pill"><i class="fas fa-redo-alt"></i> Search for another location</a>
+        <div class="uk-grid-small uk-grid-match" uk-grid>
+
+            <!-- Weather -->
+            <div class="uk-width-1-3@m">
+                <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                    <div class="uk-card-badge uk-label">Today's Forecast</div>
+                    <div class="uk-grid" uk-grid>
+                        <div class="uk-width-auto uk-margin-left">
+                        <h1>
+                            <% if @current_summary == "Clear" %>
+                                <i class="fas fa-sun"></i>
+                            <% elsif @current_summary == "Partly Cloudy" %>
+                                <i class="fas fa-cloud-sun"></i>
+                            <% elsif @current_summary == "Snow" %>
+                                <i class="fas fa-snowflake"></i>
+                            <% elsif @current_summary == "Rain" %>
+                                <i class="fas fa-cloud-rain"></i>
+                            <% elsif @current_summary == "Light Snow" %>
+                                <i class="fas fa-cloud-sun-rain"></i>
+                            <% elsif @current_summary == "Light Rain" %>
+                                <i class="fas fa-snowflake"></i>
+                            <% else %>
+                                <i class="fas fa-temperature-low"></i>
+                            <% end %>
+                        </h1>
+                        </div>
+                        <div class="uk-width-auto">
+                            <h3 class="uk-card-title uk-margin-remove-bottom"><%= @current_temp.round(1) %>&deg;F</h3>
+                            <p class="uk-text-meta uk-margin-remove-top"><%= @current_summary %> in <%= @location %> </p>
+                        </div>
+                    </div>
                 
-                @count = @count + 1
-                 %>
-                <p>
-                Weather forecast on <%= Time.at(temp["time"]).strftime("%a") %> is: <%= @forecast_tempHigh.round(1) %>&deg;F <%= @forecast_summary %>
-                </p>
-            <% end %>
-            <%= @news_articles["articles"][0]["title"] %>
-        </div>
+                    <hr>
+                    <span class="uk-label">Extended Forecast</span>
+                    <% for temp in @forecast["daily"]["data"]
+                        @forecast_tempHigh = temp["temperatureHigh"]
+                        @forecast_tempLow = temp["temperatureLow"]
+                        @forecast_summary = temp["summary"]
+                        
+                        @count = @count + 1
+                        %>
+                        <p>
+                        <span class="uk-label uk-label-success"><%= Time.at(temp["time"]).strftime("%a") %> </span>&nbsp; <%= @forecast_tempHigh.round(1) %>&deg;F <%= @forecast_summary %>
+                        </p>
+                        <hr>
+                    <% end %>
+                </div>
+            </div>
 
+            <!-- Newspaper -->
+            <div class="uk-width-expand@m">
+                <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                    <div class="uk-card-badge uk-label">National Headlines</div>
+                    <p></p>    
+                    <% n=0
+                        while n < 5 %>
+                            <h5><a href="<%= @news_articles["articles"][n]["url"] %>" target="_blank"><%= @news_articles["articles"][n]["title"] %></a></h5>
+                            <p><%= @news_articles["articles"][n]["description"] %></p>
+                            <span class="uk-label uk-label-success">Source: <%= @news_articles["articles"][n]["source"]["name"] %></span>
+                            
+                            <a href="<%= @news_articles["articles"][n]["url"] %>" class="uk-button uk-button-default uk-align-right" target="_blank">Read More</a>
+                            <hr>
+                            <% n = n+1
+                        end %>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+
+
+  
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit-icons.min.js"></script>
+
+    </body>
 </html>

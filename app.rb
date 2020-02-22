@@ -29,5 +29,6 @@ get "/news" do
     @current_summary = @forecast["currently"]["summary"]
     @count = 0
     @news_articles = HTTParty.get(url).parsed_response.to_hash
+    
     view "news"
 end

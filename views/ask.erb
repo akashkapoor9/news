@@ -5,36 +5,55 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Google Fonts -->
-    <!-- Swap out "Roboto" for the font(s) you want to use -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-    
+    <!-- Google API -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8XNrVCqcL1cfj0t9Tjq9_gMjn4H50MyA&libraries=places"></script>
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" crossorigin="anonymous">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/uikit@latest/dist/css/uikit.min.css">
     
     <!-- Your own CSS -->
     <link rel="stylesheet" href="/styles.css">
 
-    <title>News</title>
+    <title>Weather Tracker</title>
+    
   </head>
-  <body>
+  <body class="uk-flex uk-flex-center uk-flex-middle uk-background-muted uk-height-viewport" data-uk-height-viewport>
+<div class="uk-width-medium uk-border-rounded uk-card uk-card-default uk-card-body">
+    
+    <h2><center><i class="fas fa-temperature-low"></i><h2>
+    <h3>Weather Tracker</center></h3>
+    <h5><center>Enter the city to obtain weather forecast.</center></h5>
+    
+    <form class="toggle-class" action="/news">
+            <fieldset class="uk-fieldset">
+					<div class="uk-margin-small">
+						<div class="uk-inline uk-width-1-1">
+							<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: location"></span>
+							<input name="location" class="uk-input uk-border-pill" required placeholder="Location" type="text" id="location" >
+						</div>
+					</div>
+    <button class="uk-button uk-button-primary uk-border-pill uk-width-1-1">Submit</button></p></form>
+  </div>
 
-    <div class="container mt-5">
-      <h1>News</h1>
-        <form action="/news">
-            <label>Location:</label>  
-            <input name="location">
-            <button type="submit" class="btn btn-success">Submit</button>
-        </form>
-    </div>
+    
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
+    <!-- JS FILES -->
+		<script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit-icons.min.js"></script>
+        <script>
+      var input = document.getElementById('location');
+      var autocomplete = new google.maps.places.Autocomplete(input,{types: ['(cities)']});
+      google.maps.event.addListener(autocomplete, 'place_changed', function(){
+         var place = autocomplete.getPlace();
+      })
+    </script>
   </body>
 </html>
