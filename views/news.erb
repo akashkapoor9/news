@@ -24,12 +24,21 @@
 
     <div class="container mt-5">
       <h1>News</h1>
-        <form action="/news">
-            <label>Location:</label>  
-            <input name="location">
-            <button type="submit" class="btn btn-success">Submit</button>
-        </form>
-    </div>
+        <label>Current Weather: &nbsp; </label><%= @current_temp.round(1) %>&deg;F <%= @current_summary %> 
+        
+        <% for temp in @forecast["daily"]["data"]
+                @forecast_tempHigh = temp["temperatureHigh"]
+                @forecast_tempLow = temp["temperatureLow"]
+                @forecast_summary = temp["summary"]
+                
+                @count = @count + 1
+                 %>
+                <p>
+                Weather forecast on <%= Time.at(temp["time"]).strftime("%a") %> is: <%= @forecast_tempHigh.round(1) %>&deg;F <%= @forecast_summary %>
+                </p>
+            <% end %>
+            <%= @news_articles["articles"][0]["title"] %>
+        </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
